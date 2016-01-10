@@ -1,0 +1,8 @@
+<div class="card-shadow"></div>
+{{#each cards}}
+	<div class="card-item {{type}}">
+		<div class="card-item-num">
+			<span>{{[helpers/increment] @key}}</span>
+		</div>
+	</div>
+{{/each}}
