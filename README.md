@@ -23,6 +23,9 @@ module.exports = [
 Приложение использует версию node.js 5.3.
 ```
 git clone https://github.com/juliachvyrova/2gis-test
+```
+Затем перейти в скаченный проект.
+```
 npm install
 ```
 Для запуска введите 
