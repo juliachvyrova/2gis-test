@@ -4,11 +4,11 @@ var content = require("./templates/content.handlebars");
 
 var controller = require("./js/controller.js");
 
-var cards = require("./js/cart.js");
+var cards = require("./js/card.js");
 
 $(document).ready(function() {
 
-	history.pushState(cards, 'start', '');
+	history.replaceState(cards, 'start', '');
 
 	$("body").append(content({
 		cards: cards

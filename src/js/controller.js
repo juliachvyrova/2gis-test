@@ -3,50 +3,43 @@ var cardsTemplate = require("./../templates/cards-list.handlebars");
 module.exports = {
 	init: function(cards) {
 
-		var content = $(".cards");
+		var cardsContainer = $(".cards");
 
 		//перерисовка колоды карт
 		function resetCards(elem, list) {
 			elem.html(cardsTemplate({
 				cards: list
 			}));
+
+			//изменение ширины блока, содержащего карточки
+			if (cardsContainer.find(".card-item:last").hasClass("wide")) {
+				cardsContainer.addClass("cards-resize");
+			} else if (cardsContainer.hasClass("cards-resize")) {
+				cardsContainer.removeClass("cards-resize");
+			}
 		}
 
-		//событие при клике на колоду карточек (последняя карточка в колоде удаляется)
-		$(document).on('click', ".card-item", function(e) {
-			if (!e.shiftKey) {
-				cards.pop();
-				history.pushState(cards, 'Delete', '')
-				resetCards(content, cards);
-			}
-		});
-
-		//событие при клике в области колоды (добавляется карта)
+		//событие при клике на карточки
 		$(document).on('click', ".cards", function(e) {
-			if (e.shiftKey && e.altKey) {
+			var actionType;
+			if (e.shiftKey) {
+				var cardType = e.altKey ? 'wide' : 'narrow';
 				cards.push({
-					type: 'wide'
+					type: cardType
 				});
-				history.pushState(cards, 'AddCard', '')
-			} else if (e.shiftKey) {
-				cards.push({
-					type: 'narrow'
-				});
-				history.pushState(cards, 'AddCard', '')
+				actionType = 'AddCardType-' + cardType;
 			} else {
-				return;
+				cards.pop();
+				actionType = 'Delete';
 			}
-			resetCards(content, cards);
+			history.pushState(cards, actionType, '');
+			resetCards(cardsContainer, cards);
 		});
 
-
+		//событие при клике на кнопки истории в браузере
 		window.onpopstate = function(e) {
-			if (e.state != null) {
-				cards = e.state;
-			} else {
-				history.back();
-			}
-			resetCards(content, cards);
+			cards = e.state;
+			resetCards(cardsContainer, cards);
 		};
 	}
 }
